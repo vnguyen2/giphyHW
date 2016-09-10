@@ -2,20 +2,24 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Giphy Fun</title>
+	<link rel="stylesheet" type="text/css"	href="assets/css/reset.css">
+	<link rel="stylesheet" type="text/css"	href="assets/css/skeleton.css">
 	<link rel="stylesheet" type="text/css"	href="assets/css/style.css">
 </head>
 <body>
-	<div id="animalButtons"></div>
+	<div class="container">
+		<div id="animalButtons"></div>
 
-	<form id="animal-form">
-		<label for="animal-input">Add an animal</label>
-		<input type="text" id="animal-input"><br>
+		<form id="animal-form">
+			<label for="animal-input">Add an animal</label>
+			<input type="text" id="animal-input"><br>
 
-		<input id="addAnimal" type="submit" value="Submit">
-	</form>
+			<input id="addAnimal" type="submit" value="Submit">
+		</form>
 
-	<div id="animals">
+		<div id="animals">
 
+		</div>
 	</div>
 	
 	<script src="https://code.jquery.com/jquery-2.2.3.js" crossorigin="anonymous"></script>
