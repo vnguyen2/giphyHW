@@ -1,7 +1,6 @@
 
-var animalList= ['chickens', 'dogs', 'bears']; 
+var animalList= ['sheep', 'dogs', 'bears']; 
 var key = 'dc6zaTOxFJmzC';
-
 
 //create buttons from the animalList array
 function renderButtons(){ 
@@ -21,13 +20,16 @@ function renderButtons(){
 //adding additional animals to array
 $('#addAnimal').on('click', function(){
 
-    var animalNew = $('#animal-input').val().trim();
+    if($('#animal-input').val() != "") {
 
-    animalList.push(animalNew);
-        
-    renderButtons();
+        var animalNew = $('#animal-input').val().trim();
 
-    $('#animal-input').val("");
+        animalList.push(animalNew);
+            
+        renderButtons();
+
+        $('#animal-input').val("");
+    }
 
     return false;
 })
@@ -42,7 +44,7 @@ function displayAnimalGif() {
     $.ajax({
         url: queryURL,
         method: 'GET'
-   })
+    })
         .done(function(response) {
 
             console.log(response)
@@ -51,11 +53,12 @@ function displayAnimalGif() {
 
             for (var i = 0; i < results.length; i++) {
 
-                var animalDiv = $('<div>');
+                var animalDiv = $('<div>').addClass('animalContainer');
                 var p = $('<p>').text("Rating: " + results[i].rating);
                 var animalImage = $('<img>');
                 
-                animalImage.attr('src', results[i].images.original_still.url);
+                animalImage.attr('src', results[i].images.fixed_height_still.url);
+                //adding attr to handle still/animate gifs
                 animalImage.attr('data-state', 'still');
                 animalImage.attr('data-animate', results[i].images.fixed_height.url);
                 animalImage.attr('data-still', results[i].images.fixed_height_still.url);
@@ -71,9 +74,10 @@ function displayAnimalGif() {
         });
 }
 
+//checking data attr to determine whether to animate or make the gif still
 function animateGif() {
     var state = $(this).attr('data-state'); 
-
+    console.log(state);
     if (state == 'still'){
                 $(this).attr('src', $(this).data('animate'));
                 $(this).attr('data-state', 'animate');
@@ -84,8 +88,7 @@ function animateGif() {
 }
 
 $(document).on('click', '.animal', displayAnimalGif);
-//clicking image if still will display the animated gif animatednd vice versa
-$(document).on('click', 'animalGif', animateGif); 
 
+$(document).on('click', '.animalGif', animateGif); 
 
 renderButtons();

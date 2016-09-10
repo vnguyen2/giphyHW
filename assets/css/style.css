@@ -1,0 +1,26 @@
+body {
+	background-color: #8ee2cb;
+}
+
+h1 {
+	text-align: center;
+	padding: 10px 10px;
+	font-weight: bold;
+}
+
+.animal {
+	margin-right: 10px;
+	background-color: #33c3f0;
+	transition: background 0.6s;
+}
+
+.animalContainer {
+	float: left;
+	margin-right: 15px;
+	margin-bottom: 25px;
+}
+
+#addAnimal {
+	background-color: #CD5555;
+	transition: background 0.6s;
+}
