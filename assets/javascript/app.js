@@ -38,6 +38,8 @@ function displayGiphyGif() {
     var giphy = $(this).attr('data-name');
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + giphy + "&api_key=" + key + "&limit=10";
     
+    $('#giphys').empty();
+
     $.ajax({
         url: queryURL,
         method: 'GET'
