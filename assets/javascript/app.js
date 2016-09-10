@@ -1,46 +1,43 @@
 
-var animalList= ['sheep', 'dogs', 'bears']; 
+var giphyList= ['football', 'yoda', 'fail']; 
 var key = 'dc6zaTOxFJmzC';
 
-//create buttons from the animalList array
+//create buttons from the giphyList array
 function renderButtons(){ 
 
-    $('#animalButtons').empty();
+    $('#giphyButtons').empty();
 
-    for (var i = 0; i < animalList.length; i++){
-
+    for (var i = 0; i < giphyList.length; i++){
         var a = $('<button>') 
-        a.addClass('animal');
-        a.attr('data-name', animalList[i]);
-        a.text(animalList[i]); 
-        $('#animalButtons').append(a); 
+        a.addClass('giphy');
+        a.attr('data-name', giphyList[i]);
+        a.text(giphyList[i]); 
+        $('#giphyButtons').append(a); 
     }
 }
+//adding additional gifs to array
+$('#addGiphy').on('click', function(){
 
-//adding additional animals to array
-$('#addAnimal').on('click', function(){
+    if($('#giphy-input').val() != "") {
 
-    if($('#animal-input').val() != "") {
+        var giphyNew = $('#giphy-input').val().trim();
 
-        var animalNew = $('#animal-input').val().trim();
-
-        animalList.push(animalNew);
+        giphyList.push(giphyNew);
             
         renderButtons();
 
-        $('#animal-input').val("");
+        $('#giphy-input').val("");
     }
 
     return false;
 })
 
 //function to display animated gif
+function displayGiphyGif() {
 
-function displayAnimalGif() {
-
-    var animal = $(this).attr('data-name');
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=" + key + "&limit=10";
-    console.log(animal);
+    var giphy = $(this).attr('data-name');
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + giphy + "&api_key=" + key + "&limit=10";
+    
     $.ajax({
         url: queryURL,
         method: 'GET'
@@ -53,31 +50,31 @@ function displayAnimalGif() {
 
             for (var i = 0; i < results.length; i++) {
 
-                var animalDiv = $('<div>').addClass('animalContainer');
-                var p = $('<p>').text("Rating: " + results[i].rating);
-                var animalImage = $('<img>');
+                var giphyDiv = $('<div>').addClass('giphyContainer');
                 
-                animalImage.attr('src', results[i].images.fixed_height_still.url);
-                //adding attr to handle still/animate gifs
-                animalImage.attr('data-state', 'still');
-                animalImage.attr('data-animate', results[i].images.fixed_height.url);
-                animalImage.attr('data-still', results[i].images.fixed_height_still.url);
-                animalImage.addClass('animalGif')
+                var rating = results[i].rating;
+                if(rating == "") rating = 'N/A';
+                
+                var p = $('<p>').text("Rating: " + rating);
+                    p.addClass('rating');
+                var giphyImage = $('<img>');
         
-                animalDiv.append(p);
-                animalDiv.append(animalImage);
+                giphyImage.attr('src', results[i].images.fixed_height_still.url);
+                //adding attr to handle still/animate gifs
+                giphyImage.attr('data-state', 'still');
+                giphyImage.attr('data-animate', results[i].images.fixed_height.url);
+                giphyImage.attr('data-still', results[i].images.fixed_height_still.url);
+                giphyImage.addClass('giphyGif');
+                giphyDiv.append(p);
+                giphyDiv.append(giphyImage);
 
-                $('#animals').prepend(animalDiv);
-                    
+                $('#giphys').prepend(giphyDiv);               
             }
-
         });
 }
-
 //checking data attr to determine whether to animate or make the gif still
 function animateGif() {
     var state = $(this).attr('data-state'); 
-    console.log(state);
     if (state == 'still'){
                 $(this).attr('src', $(this).data('animate'));
                 $(this).attr('data-state', 'animate');
@@ -87,8 +84,8 @@ function animateGif() {
             }
 }
 
-$(document).on('click', '.animal', displayAnimalGif);
+$(document).on('click', '.giphy', displayGiphyGif);
 
-$(document).on('click', '.animalGif', animateGif); 
+$(document).on('click', '.giphyGif', animateGif); 
 
 renderButtons();
