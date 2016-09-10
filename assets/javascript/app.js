@@ -21,9 +21,9 @@ function renderButtons(){
 //adding additional animals to array
 $('#addAnimal').on('click', function(){
 
-    var animal = $('#animal-input').val().trim();
+    var animalNew = $('#animal-input').val().trim();
 
-    animalList.push(animal);
+    animalList.push(animalNew);
         
     renderButtons();
 
@@ -32,56 +32,60 @@ $('#addAnimal').on('click', function(){
     return false;
 })
 
-//on click to grab data from button and display the gif
-$('.animal').on('click', function() {
-        var animal = $(this).data('animal');
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+//function to display animated gif
 
-        $.ajax({
-                url: queryURL,
-                method: 'GET'
-            })
-            .done(function(response) {
+function displayAnimalGif() {
 
-                console.log(response)
+    var animal = $(this).attr('data-name');
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=" + key + "&limit=10";
+    console.log(animal);
+    $.ajax({
+        url: queryURL,
+        method: 'GET'
+   })
+        .done(function(response) {
 
-                var results = response.data;
+            console.log(response)
 
-                for (var i = 0; i < results.length; i++) {
+            var results = response.data;
 
-                    var animalDiv = $('<div>');
+            for (var i = 0; i < results.length; i++) {
 
-                    var p = $('<p>').text("Rating: " + results[i].rating);
+                var animalDiv = $('<div>');
+                var p = $('<p>').text("Rating: " + results[i].rating);
+                var animalImage = $('<img>');
+                
+                animalImage.attr('src', results[i].images.original_still.url);
+                animalImage.attr('data-state', 'still');
+                animalImage.attr('data-animate', results[i].images.fixed_height.url);
+                animalImage.attr('data-still', results[i].images.fixed_height_still.url);
+                animalImage.addClass('animalGif')
+        
+                animalDiv.append(p);
+                animalDiv.append(animalImage);
 
-                    var animalImage = $('<img>');
-                    animalImage.attr('src', results[i].images.fixed_height.url);
-                    animalImage.attr('data-state', 'still');
-                    animalImage.addClass('animalGif');
-
-                    animalDiv.append(p);
-                    animalDiv.append(animalImage);
-
-                    $('#animals').append(animalDiv);
+                $('#animals').prepend(animalDiv);
                     
-                }
+            }
 
-            });
-});
+        });
+}
 
-// $(document).on('click', '.animal', displayAnimalGif);
+function animateGif() {
+    var state = $(this).attr('data-state'); 
 
-//clicking image if still will display the animated gif and vice versa
-$('.animalGif').on('click', function(){
-
-	var state = $(this).attr('data-state'); 
-
-	if (state == 'still'){
+    if (state == 'still'){
                 $(this).attr('src', $(this).data('animate'));
                 $(this).attr('data-state', 'animate');
             }else{
                 $(this).attr('src', $(this).data('still'));
                 $(this).attr('data-state', 'still');
             }
-});
+}
+
+$(document).on('click', '.animal', displayAnimalGif);
+//clicking image if still will display the animated gif animatednd vice versa
+$(document).on('click', 'animalGif', animateGif); 
+
 
 renderButtons();
