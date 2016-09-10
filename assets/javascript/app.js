@@ -52,7 +52,7 @@ function displayGiphyGif() {
 
                 var giphyDiv = $('<div>').addClass('giphyContainer');
                 
-                var rating = results[i].rating;
+                var rating = results[i].rating.toUpperCase();
                 if(rating == "") rating = 'N/A';
                 
                 var p = $('<p>').text("Rating: " + rating);

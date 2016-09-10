@@ -8,10 +8,6 @@ h1 {
 	font-weight: bold;
 }
 
-.row {
-	margin-bottom: 15px;
-}
-
 .giphy {
 	margin-right: 10px;
 	background-color: #33c3f0;
@@ -33,4 +29,8 @@ h1 {
 
 #addGiphy {
 	background-color: #CD5555;
+}
+
+#giphy-form {
+	text-align: center;
 }
