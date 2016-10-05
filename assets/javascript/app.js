@@ -6,7 +6,7 @@ var key = 'dc6zaTOxFJmzC';
 function renderButtons(){ 
 
     $('#giphyButtons').empty();
-
+  
     for (var i = 0; i < giphyList.length; i++){
         var a = $('<button>') 
         a.addClass('giphy');
